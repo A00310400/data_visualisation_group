@@ -9,7 +9,7 @@ workbook = Path(
 )
 
 sheet = "Clean Data - gpt"
-x_column = "Moderate activity frequency (estimated times/week)"
+x_column = "Vigorous activity duration (minutes/session)"
 y_column = "Sitting time (hours/day)"
 
 data = pd.read_excel(
@@ -18,9 +18,9 @@ data = pd.read_excel(
     usecols=[x_column, y_column],
 ).dropna(subset=[x_column, y_column])
 
-plt.scatter(data[x_column], data[y_column], alpha=0.6)
+plt.scatter(data[x_column], data[y_column], alpha=1)
 plt.xlabel(x_column)
 plt.ylabel(y_column)
-plt.title("Weekly moderate activity vs daily sitting time")
+plt.title("Vigorous activity duration vs daily sitting time")
 plt.tight_layout()
 plt.show()
