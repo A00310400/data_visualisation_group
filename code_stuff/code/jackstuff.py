@@ -22,12 +22,19 @@ data = pd.read_excel(
 ).dropna(subset=[dataS])
 
 loopcount = 29
-for i in loopcount:
-    y_value = sum(1 for j in dataS if((i * 240 )- 240) < j < (i * 240))
+i = 1
+j = 1
+
+while i < loopcount:
+    while j < dataS:
+        if(((i * 240 )- 240) < j < (i * 240)):
+            y_value += 1
+            j+=1
     y_column1.append(y_value)
     x_column1.append(((i * 240) - 240) + " - " + (i * 240))
+    i+=1
 
-plt.barh(x_column1, y_column1)
+plt.barh(y_column1, x_column1)
 plt.ylabel("# of people")
 plt.xlabel("Time spent per 240 hours")
 plt.title("Number of people per sitting time")
@@ -48,7 +55,7 @@ data = pd.read_excel(
 ).dropna(subset=[dataS])
 
 loopcount = 28
-for i in loopcount:
+for i in range(loopcount):
     y_value = sum(1 for j in dataS if((i * 36 )- 36) < j < (i * 36))
     y_column1.append(y_value)
     x_column1.append(((i * 36) - 36) + " - " + (i * 36))
@@ -76,7 +83,7 @@ data = pd.read_excel(
 ).dropna(subset=[dataS])
 
 loopcount = 28
-for i in loopcount:
+for i in range(loopcount):
     y_value = sum(1 for j in dataS if((i * 36 )- 36) < j < (i * 36))
     y_column1.append(y_value)
     x_column1.append(((i * 36) - 36) + " - " + (i * 36))
@@ -89,3 +96,5 @@ plt.xlabel("Time spent per 36 hours")
 plt.title("Number of people per moderate activity time")
 plt.tight_layout()
 plt.show()
+
+# Visualisation 4
