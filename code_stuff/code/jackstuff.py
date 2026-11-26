@@ -3,14 +3,15 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
-workbook = Path(
-    r"C:\Users\jackp\Downloads"
-    r"\PAQ_L_Visualisation_Ready.xlsx"
+workbook = (
+    Path(file).resolve().parents[2]
+    / "Excel Files"
+    / "PAQ_L_Visualisation_Ready.xlsx"
 )
 
-# Visualisation 1
-sheet = "Clean Data - gpt"
-dataS = "s time per year"
+#Visualisation 1
+sheet = "Transformed Data - Sean"
+dataS = "Sedentary Hours per year"
 y_column0 = "# of people"
 y_column1 = []
 x_column1 = []
@@ -21,18 +22,13 @@ data = pd.read_excel(
     usecols=[dataS],
 ).dropna(subset=[dataS])
 
+values = data[dataS].dropna()
 loopcount = 29
-i = 1
-j = 1
-
-while i < loopcount:
-    while j < dataS:
-        if(((i * 240 )- 240) < j < (i * 240)):
-            y_value += 1
-            j+=1
-    y_column1.append(y_value)
-    x_column1.append(((i * 240) - 240) + " - " + (i * 240))
-    i+=1
+for i in range(1, loopcount):
+    lower = (i - 1) * 240
+    upper = i * 240
+    y_column1.append((values.gt(lower) & values.le(upper)).sum())
+    x_column1.append(f"{lower} - {upper}")
 
 plt.barh(y_column1, x_column1)
 plt.ylabel("# of people")
@@ -41,60 +37,38 @@ plt.title("Number of people per sitting time")
 plt.tight_layout()
 plt.show()
 
-# Visualisation 2
-sheet = "Clean Data - gpt"
-dataS = "v hours per year"
-y_column0 = "# of people"
-y_column1 = []
-x_column1 = []
+#Visualisation 2
+sheet = "Aggregted Data - Sean"
+label_column = "Vigorous Activity Timespan"
+count_column = "Vigorous Activity Timespan Count"
 
 data = pd.read_excel(
     workbook,
     sheet_name=sheet,
-    usecols=[dataS],
-).dropna(subset=[dataS])
+    usecols=[label_column, count_column],
+).dropna(subset=[label_column, count_column])
 
-loopcount = 28
-for i in range(loopcount):
-    y_value = sum(1 for j in dataS if((i * 36 )- 36) < j < (i * 36))
-    y_column1.append(y_value)
-    x_column1.append(((i * 36) - 36) + " - " + (i * 36))
-y_column1.append(sum(1 for i in dataS if i > 1008))
-x_column1.append(">1008")
-
-plt.barh(x_column1, y_column1)
+plt.barh(data[label_column], data[count_column])
 plt.ylabel("# of people")
 plt.xlabel("Time spent per 36 hours")
 plt.title("Number of people per vigorous activity time")
 plt.tight_layout()
 plt.show()
 
-# Visualisation 3
-sheet = "Clean Data - gpt"
-dataS = "m hours per year"
-y_column0 = "# of people"
-y_column1 = []
-x_column1 = []
+#Visualisation 3
+sheet = "Aggregted Data - Sean"
+label_column = "Moderate Activity Timespan"
+count_column = "Moderate Activity Timespan Count"
 
 data = pd.read_excel(
     workbook,
     sheet_name=sheet,
-    usecols=[dataS],
-).dropna(subset=[dataS])
+    usecols=[label_column, count_column],
+).dropna(subset=[label_column, count_column])
 
-loopcount = 28
-for i in range(loopcount):
-    y_value = sum(1 for j in dataS if((i * 36 )- 36) < j < (i * 36))
-    y_column1.append(y_value)
-    x_column1.append(((i * 36) - 36) + " - " + (i * 36))
-y_column1.append(sum(1 for i in dataS if i > 1008))
-x_column1.append(">1008")
-
-plt.barh(x_column1, y_column1)
+plt.barh(data[label_column], data[count_column])
 plt.ylabel("# of people")
 plt.xlabel("Time spent per 36 hours")
 plt.title("Number of people per moderate activity time")
 plt.tight_layout()
 plt.show()
-
-# Visualisation 4
